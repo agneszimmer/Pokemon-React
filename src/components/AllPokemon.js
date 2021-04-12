@@ -6,10 +6,9 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 const AllPokemon = () => {
-  const { pokemon, loading, setLoading } = useContext(PokemonContext);
+  const { pokemon, loading, setLoading, pokemonImg } = useContext(PokemonContext);
 
   const [pageNum, setPageNum] = useState(0);
   const cardsPerPage = 6;
@@ -20,10 +19,13 @@ const AllPokemon = () => {
     .map((pokemon) => {
       return (
         <Card key={pokemon.id} style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="holder.js/100px180" />
+          <Card.Img variant="top" src="#" />
           <Card.Body>
             <Card.Title>{pokemon.name.english}</Card.Title>
             <Card.Text>{pokemon.type}</Card.Text>
+            <Card.Text>
+              <FontAwesomeIcon icon={['fas', 'heart']} />
+            </Card.Text>
             <Button variant="primary">I choose you!</Button>
           </Card.Body>
         </Card>
@@ -36,7 +38,7 @@ const AllPokemon = () => {
     setPageNum(selected);
   };
 
-  return (
+  return !loading ? (
     <Container variant="mt-5">
       <Row>
         {displayPokemons}
@@ -63,7 +65,7 @@ const AllPokemon = () => {
         />
       </Row>
     </Container>
-  );
+  ) : <div>Loading ...</div>;
 };
 
 export default AllPokemon;
