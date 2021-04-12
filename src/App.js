@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import AllPokemon from "./components/AllPokemon";
 import Id from "./components/Id";
 import Info from "./components/Info";
+import Footer from "./components/Footer";
 
 function App() {
   return (
