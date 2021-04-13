@@ -4,6 +4,8 @@ export const PokemonContext = createContext();
 
 const PokemonState = ({ children }) => {
   const [pokemon, setPokemon] = useState([]);
+  const [pokemonImg, setPokemonImg] = useState([]);
+  const [pokemonData, setPokemonData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -15,21 +17,22 @@ const PokemonState = ({ children }) => {
         );
         const jsonData = await res.json();
         setPokemon(jsonData);
-        console.log(jsonData);
       } catch (err) {
         console.log(err.message);
       }
       setLoading(false);
     };
     getPokemon();
+  }, []);
 
-    const fetchPokemonImg = async (pokemon) => {
+  useEffect(() => {
+    const fetchPokemonImg = async (poke) => {
       setLoading(true);
-      let url = pokemon.url;
+      const {url} = poke;
       try {
         const res = await fetch(url);
         const data = await res.json();
-        setPokemon(prev => [...prev, { ...pokemon, img: data.sprites.other.dream_world.front_default} ])
+        setPokemonImg(prev => [...prev, {id: data.id, img: data.sprites.other.dream_world.front_default}])
       } catch(err) {
         console.log(err.message);
       };
@@ -41,22 +44,25 @@ const PokemonState = ({ children }) => {
       try {        
         const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=8");
         const data = await res.json();
-        data.results.forEach(pokemon => { fetchPokemonImg(pokemon) });
-        
+        data.results.forEach(poke => { fetchPokemonImg(poke) });
       } catch (err) {
         console.log(err.message);
       };
       setLoading(false);
     }
     getPokemonImg();
-  }, []);
+  }, [])
 
+  useEffect(() => {
+    const newArr = pokemon.map(p => ({...p, ...pokemonImg.find(pokeImg => pokeImg.id === p.id)}));
+    console.log(newArr);
+    setPokemonData(newArr);
+  }, [pokemon, pokemonImg]);
 
-  console.log(pokemon);
   return (
     <PokemonContext.Provider
       value={{
-        pokemon,
+        pokemonData,
         loading,
         setLoading
       }}

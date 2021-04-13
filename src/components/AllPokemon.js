@@ -8,21 +8,21 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 const AllPokemon = () => {
-  const { pokemon, loading, setLoading, pokemonImg } = useContext(PokemonContext);
+  const { pokemonData, loading, setLoading } = useContext(PokemonContext);
 
   const [pageNum, setPageNum] = useState(0);
   const cardsPerPage = 6;
   const pagesVisited = pageNum * cardsPerPage;
   // slice() Methode gibt Ausschnitt Arr zurück
-  const displayPokemons = pokemon
+  const displayPokemons = pokemonData
     .slice(pagesVisited, pagesVisited + cardsPerPage)
-    .map((pokemon) => {
+    .map((poke) => {
       return (
-        <Card key={pokemon.id} style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="#" />
+        <Card key={poke.id} style={{ width: "18rem" }}>
+          <Card.Img variant="top" src={poke.img} />
           <Card.Body>
-            <Card.Title>{pokemon.name.english}</Card.Title>
-            <Card.Text>{pokemon.type}</Card.Text>
+            <Card.Title>{poke.name.english}</Card.Title>
+            <Card.Text>{poke.type}</Card.Text>
             <Card.Text>
               <FontAwesomeIcon icon={['fas', 'heart']} />
             </Card.Text>
@@ -32,7 +32,7 @@ const AllPokemon = () => {
       );
     });
   // Math.ceil() gibt die nächste Ganzzahl, die größer oder gleich der gegebenen Zahl ist, zurück.
-  const pageCount = Math.ceil(pokemon.length / cardsPerPage);
+  const pageCount = Math.ceil(pokemonData.length / cardsPerPage);
   // ReactPaginate stellt Argument bereit, what I can destructure to {selected}
   const changePage = ({ selected }) => {
     setPageNum(selected);
