@@ -86,3 +86,10 @@
   color: #fff;
   background-color: #5e2828;
 }
+
+body {
+  background-image: url(./images/PokeFight-Background.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
