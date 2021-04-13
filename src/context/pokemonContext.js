@@ -6,6 +6,8 @@ const PokemonState = ({ children }) => {
   const [pokemon, setPokemon] = useState([]);
   const [pokemonImg, setPokemonImg] = useState([]);
   const [pokemonData, setPokemonData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const PokemonState = ({ children }) => {
     const getPokemonImg = async () => {
       setLoading(true);
       try {        
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=8");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=20");
         const data = await res.json();
         data.results.forEach(poke => { fetchPokemonImg(poke) });
       } catch (err) {
@@ -58,12 +60,18 @@ const PokemonState = ({ children }) => {
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
+  console.log(pokemonData)
+
   return (
     <PokemonContext.Provider
       value={{
         pokemonData,
         loading,
-        setLoading
+        setLoading,
+        searchTerm,
+        setSearchTerm,
+        searchResult,
+        setSearchResult
       }}
     >
       {children}
