@@ -55,7 +55,6 @@ const PokemonState = ({ children }) => {
 
   useEffect(() => {
     const newArr = pokemon.map(p => ({...p, ...pokemonImg.find(pokeImg => pokeImg.id === p.id)}));
-    console.log(newArr);
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
