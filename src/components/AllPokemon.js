@@ -25,6 +25,8 @@ const AllPokemon = () => {
             <Card.Text>{poke.type}</Card.Text>
             <Card.Text>
               <FontAwesomeIcon icon={['fas', 'heart']} />
+              <br/>
+              <FontAwesomeIcon icon={['fas', 'fist-raised']} />
             </Card.Text>
             <Button variant="primary">I choose you!</Button>
           </Card.Body>
