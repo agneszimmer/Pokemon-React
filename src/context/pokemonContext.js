@@ -70,7 +70,7 @@ const PokemonState = ({ children }) => {
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
-  console.log(pokemonData);
+  /*   console.log(pokemonData); */
 
   return (
     <PokemonContext.Provider
