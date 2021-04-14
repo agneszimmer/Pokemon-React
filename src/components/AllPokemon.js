@@ -5,19 +5,20 @@ import ReactPaginate from "react-paginate";
 import Spinner from "./Spinner";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import { Link } from "react-router-dom";
 
 const AllPokemon = () => {
-  const { 
+  const {
     pokemonData,
     loading,
     searchTerm,
     setSearchTerm,
     searchResult,
-    setSearchResult 
+    setSearchResult,
   } = useContext(PokemonContext);
 
   useEffect(() => {
@@ -26,13 +27,13 @@ const AllPokemon = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    !searchTerm ? alert('Type in something') : getFilteredResults();
+    !searchTerm ? alert("Type in something") : getFilteredResults();
   };
 
-  const onInputChange = ({target}) => {
+  const onInputChange = ({ target }) => {
     console.log(searchTerm);
     setSearchTerm(target.value);
-  }
+  };
 
   const getFilteredResults = () => {
     setSearchResult(
@@ -50,30 +51,71 @@ const AllPokemon = () => {
     .slice(pagesVisited, pagesVisited + cardsPerPage)
     .map((poke) => {
       return (
-        <Card className='mb-3 text-center' key={poke.id} style={{ flex: "0 1 19%", minWidth: "230px", opacity: "0.8" }}>
-          <Card.Img className="pt-2 top" src={poke.img} style={{ height: "200px" }} />
+        <Card
+          className="mb-3 text-center"
+          key={poke.id}
+          style={{ flex: "0 1 19%", minWidth: "230px", opacity: "0.8" }}
+        >
+          <Card.Img
+            className="pt-2 top"
+            src={poke.img}
+            style={{ height: "200px" }}
+          />
           <Card.Body>
             <Card.Title>{poke.name.english}</Card.Title>
-            <Card.Text>{poke.type.join(' | ')}</Card.Text>
+            <Card.Text>{poke.type.join(" | ")}</Card.Text>
             <ListGroup variant="flush">
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon className="icon" icon={['fas', 'heart']} />  
-                <ProgressBar className="progressBar ms-2" animated now={poke.base.HP} label={poke.base.HP} max={100}/>
+                <FontAwesomeIcon className="icon" icon={["fas", "heart"]} />
+                <ProgressBar
+                  className="progressBar ms-2"
+                  animated
+                  now={poke.base.HP}
+                  label={poke.base.HP}
+                  max={100}
+                />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon className="icon" style={{width: "20px"}} icon={['fas', 'fist-raised']} />
-                <ProgressBar className="progressBar ms-2" animated now={poke.base.Attack} label={poke.base.Attack} max={100}/>
+                <FontAwesomeIcon
+                  className="icon"
+                  style={{ width: "20px" }}
+                  icon={["fas", "fist-raised"]}
+                />
+                <ProgressBar
+                  className="progressBar ms-2"
+                  animated
+                  now={poke.base.Attack}
+                  label={poke.base.Attack}
+                  max={100}
+                />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon className="icon" icon={['fas', 'shield-alt']} />
-                <ProgressBar className="progressBar ms-2" animated now={poke.base.Defense} label={poke.base.Defense} max={100}/>
+                <FontAwesomeIcon
+                  className="icon"
+                  icon={["fas", "shield-alt"]}
+                />
+                <ProgressBar
+                  className="progressBar ms-2"
+                  animated
+                  now={poke.base.Defense}
+                  label={poke.base.Defense}
+                  max={100}
+                />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon className="icon" icon={['fas', 'meteor']} />
-                <ProgressBar className="progressBar ms-2" animated now={poke.base.Speed} label={poke.base.Speed} max={100}/>
+                <FontAwesomeIcon className="icon" icon={["fas", "meteor"]} />
+                <ProgressBar
+                  className="progressBar ms-2"
+                  animated
+                  now={poke.base.Speed}
+                  label={poke.base.Speed}
+                  max={100}
+                />
               </ListGroup.Item>
             </ListGroup>
-            <Button className="btn-light btn-outline-dark">I choose you!</Button>
+            <Link to={`/${poke.id}`}>
+              <Button variant="primary">I choose you!</Button>
+            </Link>
           </Card.Body>
         </Card>
       );
@@ -86,7 +128,7 @@ const AllPokemon = () => {
   };
 
   return searchResult && !loading ? (
-    <Container className='mt-5 mb-5'>
+    <Container className="mt-5 mb-5">
       <Row>
         <form className="input-group input-group-sm mb-5" onSubmit={onSubmit}>
           <input
@@ -102,11 +144,17 @@ const AllPokemon = () => {
               icon={["fa", "search"]}
               type="submit"
               onClick={onSubmit}
-          />
+            />
           </span>
         </form>
       </Row>
-      <Row style={{display: "flex", justifyContent: "space-around", flexWrap: "wrap"}}>
+      <Row
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          flexWrap: "wrap",
+        }}
+      >
         {displayPokemons}
         <ReactPaginate
           previousLabel={
@@ -131,7 +179,9 @@ const AllPokemon = () => {
         />
       </Row>
     </Container>
-  ) : <Spinner />;
+  ) : (
+    <Spinner />
+  );
 };
 
 export default AllPokemon;
