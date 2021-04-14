@@ -9,6 +9,8 @@ const PokemonState = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [myPokemon, setMyPokemon] = useState();
+  const [opponent, setOpponent] = useState();
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -30,37 +32,45 @@ const PokemonState = ({ children }) => {
   useEffect(() => {
     const fetchPokemonImg = async (poke) => {
       setLoading(true);
-      const {url} = poke;
+      const { url } = poke;
       try {
         const res = await fetch(url);
         const data = await res.json();
-        setPokemonImg(prev => [...prev, {id: data.id, img: data.sprites.other.dream_world.front_default}])
-      } catch(err) {
+        setPokemonImg((prev) => [
+          ...prev,
+          { id: data.id, img: data.sprites.other.dream_world.front_default },
+        ]);
+      } catch (err) {
         console.log(err.message);
-      };
+      }
       setLoading(false);
-    }
+    };
 
     const getPokemonImg = async () => {
       setLoading(true);
-      try {        
+      try {
         const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=24");
         const data = await res.json();
-        data.results.forEach(poke => { fetchPokemonImg(poke) });
+        data.results.forEach((poke) => {
+          fetchPokemonImg(poke);
+        });
       } catch (err) {
         console.log(err.message);
-      };
+      }
       setLoading(false);
-    }
+    };
     getPokemonImg();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const newArr = pokemon.map(p => ({...p, ...pokemonImg.find(pokeImg => pokeImg.id === p.id)}));
+    const newArr = pokemon.map((p) => ({
+      ...p,
+      ...pokemonImg.find((pokeImg) => pokeImg.id === p.id),
+    }));
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
-  console.log(pokemonData)
+  console.log(pokemonData);
 
   return (
     <PokemonContext.Provider
@@ -71,7 +81,11 @@ const PokemonState = ({ children }) => {
         searchTerm,
         setSearchTerm,
         searchResult,
-        setSearchResult
+        setSearchResult,
+        myPokemon,
+        setMyPokemon,
+        opponent,
+        setOpponent,
       }}
     >
       {children}
