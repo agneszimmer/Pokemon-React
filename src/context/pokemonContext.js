@@ -44,7 +44,7 @@ const PokemonState = ({ children }) => {
     const getPokemonImg = async () => {
       setLoading(true);
       try {        
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=20");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=24");
         const data = await res.json();
         data.results.forEach(poke => { fetchPokemonImg(poke) });
       } catch (err) {

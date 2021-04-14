@@ -1,3 +1,17 @@
+* {
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url(./images/PokeFight-Background.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /* Searchbar */
 .searchbar {
   padding: 10px;
@@ -38,14 +52,15 @@
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  color: #fff;
+  color: #212529;
   list-style: none;
+  opacity: 0.8;
 }
 
 .paginationBtns a {
   text-decoration: none;
-  background-color: #ccc;
-  color: #fff;
+  background-color: #fff;
+  color: #212529;
   padding: 5px 10px;
   margin: 8px;
   border-radius: 3px;
@@ -53,8 +68,8 @@
 }
 
 .paginationBtns a:hover {
-  background-color: #5e2828;
-  color: #fff;
+  background-color: #212529;
+  color: #fff !important;
 }
 
 .previousBtns {
@@ -65,12 +80,7 @@
   background-color: transparent;
 }
 
-.paginationDisabled a {
-  background-color: #fff;
-  color: #ccc;
-  border: 0;
-}
-
+.paginationDisabled a,
 .paginationDisabled a:hover {
   background-color: #fff;
   color: #ccc;
@@ -84,12 +94,5 @@
 
 .paginationActive a {
   color: #fff;
-  background-color: #5e2828;
-}
-
-body {
-  background-image: url(./images/PokeFight-Background.jpeg);
-  background-repeat: no-repeat;
-  background-size: cover;
-
+  background-color: #212529;
 }
