@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Navbar />
       <Switch>
         <Route exact path="/" component={AllPokemon} />
@@ -17,7 +17,7 @@ function App() {
         <Route exact path="/:stats" component={Stats} />
       </Switch>
       <Footer />
-    </div>
+    </>
   );
 }
 

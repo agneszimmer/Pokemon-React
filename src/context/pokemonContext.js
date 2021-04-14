@@ -1,3 +1,4 @@
+import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect, createContext } from "react";
 
 export const PokemonContext = createContext();
@@ -11,6 +12,18 @@ const PokemonState = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [myPokemon, setMyPokemon] = useState();
   const [opponent, setOpponent] = useState();
+  const [myLifePoints, setMyLifePoints] = useState();
+  const [opLifePoints, setOpLifePoints] = useState();
+  const [filter, setFilter] = useState({
+    checkHealth: false,
+    checkAttack: false,
+    checkDefense: false,
+    checkSpeed: false
+  })
+
+  const handleFilter = ({target}) => {
+    setFilter({ ...filter, [target.name]: !target.defaultChecked})
+  }
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -70,7 +83,7 @@ const PokemonState = ({ children }) => {
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
-  /*   console.log(pokemonData); */
+
 
   return (
     <PokemonContext.Provider
@@ -86,6 +99,13 @@ const PokemonState = ({ children }) => {
         setMyPokemon,
         opponent,
         setOpponent,
+        myLifePoints, 
+        setMyLifePoints,
+        opLifePoints, 
+        setOpLifePoints,
+        filter,
+        setFilter,
+        handleFilter
       }}
     >
       {children}
