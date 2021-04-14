@@ -57,20 +57,20 @@ const AllPokemon = () => {
             <Card.Text>{poke.type.join(' | ')}</Card.Text>
             <ListGroup variant="flush">
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon icon={['fas', 'heart']} />  
-                <ProgressBar className="ms-2" style={{width: "90%"}} animated now={poke.base.HP} label={poke.base.HP} max={100}/>
+                <FontAwesomeIcon className="icon" icon={['fas', 'heart']} />  
+                <ProgressBar className="progressBar ms-2" animated now={poke.base.HP} label={poke.base.HP} max={100}/>
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon icon={['fas', 'fist-raised']} />
-                <ProgressBar className="ms-2" style={{width: "90%"}} animated now={poke.base.Attack} label={poke.base.Attack} max={100}/>
+                <FontAwesomeIcon className="icon" style={{width: "20px"}} icon={['fas', 'fist-raised']} />
+                <ProgressBar className="progressBar ms-2" animated now={poke.base.Attack} label={poke.base.Attack} max={100}/>
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon icon={['fas', 'shield-alt']} />
-                <ProgressBar className="ms-2" style={{width: "90%"}} animated now={poke.base.Defense} label={poke.base.Defense} max={100}/>
+                <FontAwesomeIcon className="icon" icon={['fas', 'shield-alt']} />
+                <ProgressBar className="progressBar ms-2" animated now={poke.base.Defense} label={poke.base.Defense} max={100}/>
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon icon={['fas', 'meteor']} />
-                <ProgressBar className="ms-2" style={{width: "90%"}} animated now={poke.base.Speed} label={poke.base.Speed} max={100}/>
+                <FontAwesomeIcon className="icon" icon={['fas', 'meteor']} />
+                <ProgressBar className="progressBar ms-2" animated now={poke.base.Speed} label={poke.base.Speed} max={100}/>
               </ListGroup.Item>
             </ListGroup>
             <Button className="btn-light btn-outline-dark">I choose you!</Button>

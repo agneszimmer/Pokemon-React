@@ -45,6 +45,16 @@ body {
   color: #191919;
 }
 
+/* Pokemon Cards */
+
+.icon {
+  width: 20px;
+}
+
+.progressBar {
+  width: 90%;
+}
+
 /* Pagination */
 .paginationBtns {
   width: 80%;
