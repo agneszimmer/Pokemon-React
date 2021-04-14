@@ -199,7 +199,7 @@ const AllPokemon = () => {
             />
           </span>
           <Col className="col-auto px-3 colFilter">
-            <div>Filter by (ascending)</div>
+            <div>Filter by (descending)</div>
             <div className="form-check form-switch">
               <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" />
               <label className="form-check-label" for="checkHealth">
