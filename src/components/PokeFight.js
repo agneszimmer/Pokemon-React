@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { PokemonContext } from "../context/pokemonContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
@@ -12,9 +12,6 @@ const PokeFight = () => {
   const { id } = useParams();
   const {
     pokemonData,
-    loading,
-    setLoading,
-    pokemonImg,
     myPokemon,
     setMyPokemon,
     opponent,
@@ -33,8 +30,8 @@ const PokeFight = () => {
 
   return (
     <div>
-      {myPokemon && (
-        <div>
+      {opponent && (
+        <div className="d-flex justify-content-around align-items-center">
           <Card key={myPokemon.id} style={{ width: "18rem" }}>
             <Card.Img
               className="pt-2 top"
@@ -96,6 +93,8 @@ const PokeFight = () => {
             </Card.Body>
           </Card>
 
+          <Button variant="primary">Attack</Button>
+
           <Card key={opponent.id} style={{ width: "18rem" }}>
             <Card.Img
               className="pt-2 top"
@@ -156,8 +155,6 @@ const PokeFight = () => {
               </ListGroup>
             </Card.Body>
           </Card>
-
-          <Button variant="primary">Attack</Button>
         </div>
       )}
     </div>
