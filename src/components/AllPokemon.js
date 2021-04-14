@@ -113,7 +113,7 @@ const AllPokemon = () => {
                 />
               </ListGroup.Item>
             </ListGroup>
-            <Link to={`/pokemon/${poke.id}`}>
+            <Link to={`/${poke.id}`}>
               <Button variant="primary">I choose you!</Button>
             </Link>
           </Card.Body>

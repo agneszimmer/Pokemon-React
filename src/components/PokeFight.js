@@ -40,6 +40,7 @@ const PokeFight = () => {
 
   return (
     <div>
+      <h1>hello</h1>
       {/*       <Card key={myPokemon.id} style={{ width: "18rem" }}>
         <Card.Img variant="top" src="#" />
         <Card.Body>
