@@ -108,10 +108,8 @@ const PokemonState = ({ children }) => {
         opLifePoints, 
         setOpLifePoints,
         filter,
-        setFilter,
         handleFilter,
         toggled,
-        setToggled,
         handleToggleDN
       }}
     >
