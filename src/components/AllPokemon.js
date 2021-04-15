@@ -21,7 +21,8 @@ const AllPokemon = () => {
     searchResult,
     setSearchResult,
     filter,
-    handleFilter
+    handleFilter,
+    toggled
   } = useContext(PokemonContext);
 
   useEffect(() => {
@@ -107,7 +108,7 @@ const AllPokemon = () => {
     .map((poke) => {
       return (
         <Card
-          className="mb-3 text-center pokeCard"
+          className={`mb-3 text-center pokeCard ${!toggled ? "" : "night"}`}
           key={poke.id}
         >
           <Card.Img
@@ -117,7 +118,7 @@ const AllPokemon = () => {
           <Card.Body>
             <Card.Title>{poke.name.english}</Card.Title>
             <Card.Text>{poke.type.join(" | ")}</Card.Text>
-            <ListGroup variant="flush">
+            <ListGroup variant="flush mb-3">
               <ListGroup.Item className="d-flex">
                 <FontAwesomeIcon className="icon" icon={["fas", "heart"]} color="red"/>
                 <ProgressBar
@@ -166,7 +167,7 @@ const AllPokemon = () => {
               </ListGroup.Item>
             </ListGroup>
             <Link to={`/${poke.id}`}>
-              <Button variant="btn btn-outline-dark">I choose you!</Button>
+              <Button variant={`btn btn-outline-${!toggled ? "dark" : "light"}`}>I choose you!</Button>
             </Link>
           </Card.Body>
         </Card>
@@ -182,23 +183,24 @@ const AllPokemon = () => {
   return searchResult && !loading ? (
     <Container className="mt-5 mb-5">
       <Row>
-        <form className="input-group input-group-sm mb-5" onSubmit={onSubmit}>
+        <form className={`input-group input-group-sm mb-5 ${!toggled ? "day" : "night"}`} onSubmit={onSubmit}>
           <input
-            className="form-control searchbar"
+            className={`form-control searchbar ${!toggled ? "" : "night"}`}
             type="search"
             placeholder="Search your Pokemon"
             aria-label="Search"
             onChange={onInputChange}
             value={searchTerm}
           />
-          <span className="input-group-text search-icon-container">
+          <span className={`input-group-text search-icon-container ${!toggled ? "" : "night"}`}>
             <FontAwesomeIcon
+              className={`${!toggled ? "" : "iconNight"}`}
               icon={["fa", "search"]}
               type="submit"
               onClick={onSubmit}
             />
           </span>
-          <Col className="col-auto px-3 colFilter">
+          <Col className={`col-auto px-3 colFilter ${!toggled ? "" : "night"}`}>
             <div>Filter by (descending)</div>
             <div className="form-check form-switch">
               <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" />
