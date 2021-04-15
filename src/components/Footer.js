@@ -9,7 +9,9 @@ const Footer = () => {
 
   return (
     <footer className={`text-left pb-2 ${!toggled ? "day" : "night"}`}>
-      <img src={banner} alt="Pokemon Banner"/>
+      <div className='container'>
+        <img src={banner} alt="Pokemon Banner"/>
+      </div>
     </footer>
     );
 };
