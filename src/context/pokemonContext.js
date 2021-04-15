@@ -1,4 +1,3 @@
-import { faBullseye } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect, createContext } from "react";
 
 export const PokemonContext = createContext();
@@ -20,10 +19,15 @@ const PokemonState = ({ children }) => {
     checkDefense: false,
     checkSpeed: false
   })
-
+  const [toggled, setToggled] = useState(false);
+  
   const handleFilter = ({target}) => {
     setFilter({ ...filter, [target.name]: !target.defaultChecked})
   }
+  
+  const handleToggleDN = () => {
+    setToggled(prev => !prev);
+  };
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -105,7 +109,10 @@ const PokemonState = ({ children }) => {
         setOpLifePoints,
         filter,
         setFilter,
-        handleFilter
+        handleFilter,
+        toggled,
+        setToggled,
+        handleToggleDN
       }}
     >
       {children}
