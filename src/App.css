@@ -45,10 +45,31 @@ body {
   color: #191919;
 }
 
+.colFilter {
+  color: #6c757d;
+  background: #fff;
+  border-color: #6c757d;
+  padding: 5px 5px;
+}
+
+.colFilter:hover {
+  box-shadow: 0 0 10px #6c757d;
+}
+
 /* Pokemon Cards */
+.pokeCard {
+  flex: 0 1 19%;
+  min-width: 230px;
+  opacity: 0.8;
+}
+
+.pokeImg {
+  height: 200px;
+}
 
 .icon {
   width: 20px;
+  margin-left: 5px;
 }
 
 .progressBar {
@@ -105,4 +126,10 @@ body {
 .paginationActive a {
   color: #fff;
   background-color: #212529;
+}
+
+footer {
+  background-color: #212529;
+  opacity: 0.7;
+  height: 300px;
 }

@@ -9,6 +9,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 
 const AllPokemon = () => {
@@ -19,6 +20,8 @@ const AllPokemon = () => {
     setSearchTerm,
     searchResult,
     setSearchResult,
+    filter,
+    handleFilter
   } = useContext(PokemonContext);
 
   useEffect(() => {
@@ -27,7 +30,10 @@ const AllPokemon = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    !searchTerm ? alert("Type in something") : getFilteredResults();
+    if(!searchTerm) {
+      setSearchResult(pokemonData);
+      getFilteredResults();
+    } else getFilteredResults();
   };
 
   const onInputChange = ({ target }) => {
@@ -36,11 +42,60 @@ const AllPokemon = () => {
   };
 
   const getFilteredResults = () => {
-    setSearchResult(
-      pokemonData.filter((poke) =>
-        poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
+    // 1) Every key in filter obj false
+    if(Object.keys(filter).every((key) => !filter[key])) {
+      const searchFilter = pokemonData.filter(poke => {
+      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+      });  
+      setSearchResult(searchFilter);
+    };
+
+    // 2) Filter Health Points true
+    if(filter['checkHealth']) {
+      const searchFilter = pokemonData.filter(poke => {
+      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+      });
+      const filt = searchFilter.sort((a, b) => {
+        return b.base.HP - a.base.HP
+      });
+      setSearchResult(filt);
+    };
+
+    // 3) Filter Attack Points true
+    if(filter['checkAttack']) {
+      const searchFilter = pokemonData.filter(poke => {
+      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+      });
+      const filt = searchFilter.sort((a, b) => {
+        return b.base.Attack - a.base.Attack
+      });
+      setSearchResult(filt);
+    };
+
+    // 4) Filter Defense Points true
+    if(filter['checkDefense']) {
+      const searchFilter = pokemonData.filter(poke => {
+      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+      });
+      const filt = searchFilter.sort((a, b) => {
+        return b.base.Defense - a.base.Defense
+      });
+      setSearchResult(filt);
+    };
+
+    // 5) Filter Speed Points true
+    if(filter['checkSpeed']) {
+      const searchFilter = pokemonData.filter(poke => {
+      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+      });
+      const filt = searchFilter.sort((a, b) => {
+        return b.base.Speed - a.base.Speed
+      });
+      setSearchResult(filt);
+    };
+
+
+
   };
 
   const [pageNum, setPageNum] = useState(0);
@@ -52,33 +107,30 @@ const AllPokemon = () => {
     .map((poke) => {
       return (
         <Card
-          className="mb-3 text-center"
+          className="mb-3 text-center pokeCard"
           key={poke.id}
-          style={{ flex: "0 1 19%", minWidth: "230px", opacity: "0.8" }}
         >
           <Card.Img
-            className="pt-2 top"
+            className="pt-2 top pokeImg"
             src={poke.img}
-            style={{ height: "200px" }}
           />
           <Card.Body>
             <Card.Title>{poke.name.english}</Card.Title>
             <Card.Text>{poke.type.join(" | ")}</Card.Text>
             <ListGroup variant="flush">
               <ListGroup.Item className="d-flex">
-                <FontAwesomeIcon className="icon" icon={["fas", "heart"]} />
+                <FontAwesomeIcon className="icon" icon={["fas", "heart"]} color="red"/>
                 <ProgressBar
                   className="progressBar ms-2"
                   animated
                   now={poke.base.HP}
                   label={poke.base.HP}
-                  max={100}
+                  max={150}
                 />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
                 <FontAwesomeIcon
                   className="icon"
-                  style={{ width: "20px" }}
                   icon={["fas", "fist-raised"]}
                 />
                 <ProgressBar
@@ -86,7 +138,7 @@ const AllPokemon = () => {
                   animated
                   now={poke.base.Attack}
                   label={poke.base.Attack}
-                  max={100}
+                  max={150}
                 />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
@@ -99,7 +151,7 @@ const AllPokemon = () => {
                   animated
                   now={poke.base.Defense}
                   label={poke.base.Defense}
-                  max={100}
+                  max={150}
                 />
               </ListGroup.Item>
               <ListGroup.Item className="d-flex">
@@ -109,7 +161,7 @@ const AllPokemon = () => {
                   animated
                   now={poke.base.Speed}
                   label={poke.base.Speed}
-                  max={100}
+                  max={150}
                 />
               </ListGroup.Item>
             </ListGroup>
@@ -146,6 +198,37 @@ const AllPokemon = () => {
               onClick={onSubmit}
             />
           </span>
+          <Col className="col-auto px-3 colFilter">
+            <div>Filter by (descending)</div>
+            <div className="form-check form-switch">
+              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" />
+              <label className="form-check-label" for="checkHealth">
+                Health Points (HP) 
+                <FontAwesomeIcon className="icon" icon={["fas", "heart"]} color="red"/>
+              </label>
+            </div>
+            <div className="form-check form-switch">
+              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkAttack} name="checkAttack" type="checkbox" id="checkAttack" />
+              <label className="form-check-label" for="checkAttack">
+                Attack Points 
+                <FontAwesomeIcon className="icon" icon={["fas", "fist-raised"]} />
+              </label>
+            </div>
+            <div className="form-check form-switch">
+              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkDefense} name="checkDefense" type="checkbox" id="checkDefense" />
+              <label className="form-check-label" for="checkDefense">
+                Defense Points
+                <FontAwesomeIcon className="icon" icon={["fas", "shield-alt"]}/>
+              </label>
+            </div>
+            <div className="form-check form-switch">
+              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkSpeed} name="checkSpeed" type="checkbox" id="checkDefense" />
+              <label className="form-check-label" for="checkSpeed">
+                Speed Points
+                <FontAwesomeIcon className="icon" icon={["fas", "meteor"]}/>
+              </label>
+            </div>
+          </Col>
         </form>
       </Row>
       <Row
