@@ -31,10 +31,14 @@ const AllPokemon = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(e.target.elements.checkAttack.value)
     if(!searchTerm) {
       setSearchResult(pokemonData);
       getFilteredResults();
-    } else getFilteredResults();
+    } else {
+      console.log(filter)
+      getFilteredResults()
+    };
   };
 
   const onInputChange = ({ target }) => {
@@ -43,60 +47,26 @@ const AllPokemon = () => {
   };
 
   const getFilteredResults = () => {
-    // 1) Every key in filter obj false
-    if(Object.keys(filter).every((key) => !filter[key])) {
-      const searchFilter = pokemonData.filter(poke => {
-      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      });  
-      setSearchResult(searchFilter);
-    };
+    // ES6
+    const searchFilter = (toggle) => pokemonData.filter(poke => poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())).sort((a, b) => b.base[toggle] - a.base[toggle]);
 
-    // 2) Filter Health Points true
-    if(filter['checkHealth']) {
-      const searchFilter = pokemonData.filter(poke => {
-      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      });
-      const filt = searchFilter.sort((a, b) => {
-        return b.base.HP - a.base.HP
-      });
-      setSearchResult(filt);
-    };
-
-    // 3) Filter Attack Points true
-    if(filter['checkAttack']) {
-      const searchFilter = pokemonData.filter(poke => {
-      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      });
-      const filt = searchFilter.sort((a, b) => {
-        return b.base.Attack - a.base.Attack
-      });
-      setSearchResult(filt);
-    };
-
-    // 4) Filter Defense Points true
-    if(filter['checkDefense']) {
-      const searchFilter = pokemonData.filter(poke => {
-      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      });
-      const filt = searchFilter.sort((a, b) => {
-        return b.base.Defense - a.base.Defense
-      });
-      setSearchResult(filt);
-    };
-
-    // 5) Filter Speed Points true
-    if(filter['checkSpeed']) {
-      const searchFilter = pokemonData.filter(poke => {
-      return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
-      });
-      const filt = searchFilter.sort((a, b) => {
-        return b.base.Speed - a.base.Speed
-      });
-      setSearchResult(filt);
-    };
-
-
-
+    // ES5
+    // function searchFilter(toggle){
+    //   return pokemonData.filter(function (poke) {
+    //     return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
+    //   }).sort(function (a, b){ return  b.base[toggle] - a.base[toggle]});
+    // }
+    
+    // 1) Filter Health Points true
+    if(filter['checkHealth']) return setSearchResult(searchFilter('HP'))
+    // 2) Filter Attack Points true
+    if(filter['checkAttack']) return setSearchResult(searchFilter('Attack'))
+    // 3) Filter Defense Points true
+    if(filter['checkDefense']) return setSearchResult(searchFilter('Defense'))
+    // 4) Filter Speed Points true
+    if(filter['checkSpeed']) return setSearchResult(searchFilter('Speed'))
+    // 5) Every key in filter obj false
+    setSearchResult(searchFilter);
   };
 
   const [pageNum, setPageNum] = useState(0);
@@ -192,39 +162,38 @@ const AllPokemon = () => {
             onChange={onInputChange}
             value={searchTerm}
           />
-          <span className={`input-group-text search-icon-container ${!toggled ? "" : "night"}`}>
+          <button className={`input-group-text search-icon-container ${!toggled ? "" : "night"}`} type='submit'>
             <FontAwesomeIcon
               className={`${!toggled ? "" : "iconNight"}`}
               icon={["fa", "search"]}
               type="submit"
-              onClick={onSubmit}
             />
-          </span>
+          </button>
           <Col className={`col-auto px-3 colFilter ${!toggled ? "" : "night"}`}>
             <div>Filter by (descending)</div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" />
+              <input className="form-check-input" onChange={handleFilter} value={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" checked={`${filter.checkHealth ? "checked" : ""}`} />
               <label className="form-check-label" for="checkHealth">
                 Health Points (HP) 
                 <FontAwesomeIcon className="icon" icon={["fas", "heart"]} color="red"/>
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkAttack} name="checkAttack" type="checkbox" id="checkAttack" />
+              <input className="form-check-input" onChange={handleFilter} value={filter.checkAttack} name="checkAttack" type="checkbox" id="checkAttack" checked={`${filter.checkAttack ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkAttack">
                 Attack Points 
                 <FontAwesomeIcon className="icon" icon={["fas", "fist-raised"]} />
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkDefense} name="checkDefense" type="checkbox" id="checkDefense" />
+              <input className="form-check-input" onChange={handleFilter} value={filter.checkDefense} name="checkDefense" type="checkbox" id="checkDefense" checked={`${filter.checkDefense ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkDefense">
                 Defense Points
                 <FontAwesomeIcon className="icon" icon={["fas", "shield-alt"]}/>
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onClick={handleFilter} defaultChecked={filter.checkSpeed} name="checkSpeed" type="checkbox" id="checkDefense" />
+              <input className="form-check-input" onChange={handleFilter} value={filter.checkSpeed} name="checkSpeed" type="checkbox" id="checkDefense" checked={`${filter.checkSpeed ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkSpeed">
                 Speed Points
                 <FontAwesomeIcon className="icon" icon={["fas", "meteor"]}/>

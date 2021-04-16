@@ -20,9 +20,15 @@ const PokemonState = ({ children }) => {
     checkSpeed: false
   })
   const [toggled, setToggled] = useState(false);
+  const [switchBtn, setSwitchBtn] = useState(false);
   
   const handleFilter = ({target}) => {
-    setFilter({ ...filter, [target.name]: !target.defaultChecked})
+    console.log(filter)
+    console.log(switchBtn);
+    setSwitchBtn(prev => !prev);
+    setFilter(Object.keys(filter).forEach(value => filter[value] = false));
+    console.log(target)
+    setFilter({ ...filter, [target.name]: switchBtn});
   }
   
   const handleToggleDN = () => {
