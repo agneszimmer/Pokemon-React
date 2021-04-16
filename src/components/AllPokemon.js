@@ -28,10 +28,11 @@ const AllPokemon = () => {
   useEffect(() => {
     setSearchResult(pokemonData);
   }, [pokemonData, searchTerm]);
+  
+  const onInputChange = ({ target }) => setSearchTerm(target.value);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.elements.checkAttack.value)
     if(!searchTerm) {
       setSearchResult(pokemonData);
       getFilteredResults();
@@ -39,11 +40,6 @@ const AllPokemon = () => {
       console.log(filter)
       getFilteredResults()
     };
-  };
-
-  const onInputChange = ({ target }) => {
-    console.log(searchTerm);
-    setSearchTerm(target.value);
   };
 
   const getFilteredResults = () => {
@@ -56,15 +52,15 @@ const AllPokemon = () => {
     //     return poke.name.english.toLowerCase().includes(searchTerm.toLowerCase())
     //   }).sort(function (a, b){ return  b.base[toggle] - a.base[toggle]});
     // }
-    
+
     // 1) Filter Health Points true
-    if(filter['checkHealth']) return setSearchResult(searchFilter('HP'))
+    if(filter[0].state) return setSearchResult(searchFilter('HP'))
     // 2) Filter Attack Points true
-    if(filter['checkAttack']) return setSearchResult(searchFilter('Attack'))
+    if(filter[1].state) return setSearchResult(searchFilter('Attack'))
     // 3) Filter Defense Points true
-    if(filter['checkDefense']) return setSearchResult(searchFilter('Defense'))
+    if(filter[2].state) return setSearchResult(searchFilter('Defense'))
     // 4) Filter Speed Points true
-    if(filter['checkSpeed']) return setSearchResult(searchFilter('Speed'))
+    if(filter[3].state) return setSearchResult(searchFilter('Speed'))
     // 5) Every key in filter obj false
     setSearchResult(searchFilter);
   };
@@ -172,28 +168,28 @@ const AllPokemon = () => {
           <Col className={`col-auto px-3 colFilter ${!toggled ? "" : "night"}`}>
             <div>Filter by (descending)</div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onChange={handleFilter} value={filter.checkHealth} name="checkHealth" type="checkbox" id="checkHealth" checked={`${filter.checkHealth ? "checked" : ""}`} />
+              <input className="form-check-input" onChange={handleFilter} value={filter.find(item => item.id === 'checkHealth').state} name="checkHealth" type="checkbox" checked={`${filter.find(item => item.id === 'checkHealth').state ? "checked" : ""}`} />
               <label className="form-check-label" for="checkHealth">
                 Health Points (HP) 
                 <FontAwesomeIcon className="icon" icon={["fas", "heart"]} color="red"/>
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onChange={handleFilter} value={filter.checkAttack} name="checkAttack" type="checkbox" id="checkAttack" checked={`${filter.checkAttack ? "checked" : ""}`}/>
+              <input className="form-check-input" onChange={handleFilter} value={filter.find(item => item.id === 'checkAttack').state} name="checkAttack" type="checkbox" checked={`${filter.find(item => item.id === 'checkAttack').state ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkAttack">
                 Attack Points 
                 <FontAwesomeIcon className="icon" icon={["fas", "fist-raised"]} />
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onChange={handleFilter} value={filter.checkDefense} name="checkDefense" type="checkbox" id="checkDefense" checked={`${filter.checkDefense ? "checked" : ""}`}/>
+              <input className="form-check-input" onChange={handleFilter} value={filter.find(item => item.id === 'checkDefense').state} name="checkDefense" type="checkbox" checked={`${filter.find(item => item.id === 'checkDefense').state ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkDefense">
                 Defense Points
                 <FontAwesomeIcon className="icon" icon={["fas", "shield-alt"]}/>
               </label>
             </div>
             <div className="form-check form-switch">
-              <input className="form-check-input" onChange={handleFilter} value={filter.checkSpeed} name="checkSpeed" type="checkbox" id="checkDefense" checked={`${filter.checkSpeed ? "checked" : ""}`}/>
+              <input className="form-check-input" onChange={handleFilter} value={filter.find(item => item.id === 'checkSpeed').state} name="checkSpeed" type="checkbox" checked={`${filter.find(item => item.id === 'checkSpeed').state ? "checked" : ""}`}/>
               <label className="form-check-label" for="checkSpeed">
                 Speed Points
                 <FontAwesomeIcon className="icon" icon={["fas", "meteor"]}/>

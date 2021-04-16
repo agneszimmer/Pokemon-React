@@ -13,22 +13,17 @@ const PokemonState = ({ children }) => {
   const [opponent, setOpponent] = useState();
   const [myLifePoints, setMyLifePoints] = useState();
   const [opLifePoints, setOpLifePoints] = useState();
-  const [filter, setFilter] = useState({
-    checkHealth: false,
-    checkAttack: false,
-    checkDefense: false,
-    checkSpeed: false
-  })
   const [toggled, setToggled] = useState(false);
-  const [switchBtn, setSwitchBtn] = useState(false);
-  
+  const [filter, setFilter] = useState([
+    {id: 'checkHealth', state: false},
+    {id: 'checkAttack', state: false},
+    {id: 'checkDefense', state: false},
+    {id: 'checkSpeed', state: false}
+  ])
+
   const handleFilter = ({target}) => {
-    console.log(filter)
-    console.log(switchBtn);
-    setSwitchBtn(prev => !prev);
-    setFilter(Object.keys(filter).forEach(value => filter[value] = false));
-    console.log(target)
-    setFilter({ ...filter, [target.name]: switchBtn});
+    const newFilter = filter.map(filter => filter.id === target.name && filter.state !== true ? ({...filter, state: true}) : ({...filter, state: false}));
+    setFilter(newFilter);
   }
   
   const handleToggleDN = () => {
