@@ -48,8 +48,8 @@ const PokemonState = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     const fetchPokemonImg = async (poke) => {
-      setLoading(true);
       const { url } = poke;
       try {
         const res = await fetch(url);
@@ -61,13 +61,11 @@ const PokemonState = ({ children }) => {
       } catch (err) {
         console.log(err.message);
       }
-      setLoading(false);
     };
 
     const getPokemonImg = async () => {
-      setLoading(true);
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=24");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=40");
         const data = await res.json();
         data.results.forEach((poke) => {
           fetchPokemonImg(poke);
@@ -75,9 +73,9 @@ const PokemonState = ({ children }) => {
       } catch (err) {
         console.log(err.message);
       }
-      setLoading(false);
     };
     getPokemonImg();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
