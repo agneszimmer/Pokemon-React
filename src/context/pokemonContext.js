@@ -9,10 +9,8 @@ const PokemonState = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [myPokemon, setMyPokemon] = useState();
-  const [opponent, setOpponent] = useState();
-  const [myLifePoints, setMyLifePoints] = useState();
-  const [opLifePoints, setOpLifePoints] = useState();
+  const [score, setScore] = useState();
+  const [history, setHistory] = useState();
   const [toggled, setToggled] = useState(false);
   const [filter, setFilter] = useState([
     {id: 'checkHealth', state: false},
@@ -98,14 +96,10 @@ const PokemonState = ({ children }) => {
         setSearchTerm,
         searchResult,
         setSearchResult,
-        myPokemon,
-        setMyPokemon,
-        opponent,
-        setOpponent,
-        myLifePoints, 
-        setMyLifePoints,
-        opLifePoints, 
-        setOpLifePoints,
+        score,
+        setScore,
+        history,
+        setHistory,
         filter,
         handleFilter,
         toggled,
