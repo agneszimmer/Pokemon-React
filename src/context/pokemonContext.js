@@ -9,23 +9,27 @@ const PokemonState = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [score, setScore] = useState();
+  const [score, setScore] = useState(0);
   const [history, setHistory] = useState();
   const [toggled, setToggled] = useState(false);
   const [filter, setFilter] = useState([
-    {id: 'checkHealth', state: false},
-    {id: 'checkAttack', state: false},
-    {id: 'checkDefense', state: false},
-    {id: 'checkSpeed', state: false}
-  ])
+    { id: "checkHealth", state: false },
+    { id: "checkAttack", state: false },
+    { id: "checkDefense", state: false },
+    { id: "checkSpeed", state: false },
+  ]);
 
-  const handleFilter = ({target}) => {
-    const newFilter = filter.map(filter => filter.id === target.name && filter.state !== true ? ({...filter, state: true}) : ({...filter, state: false}));
+  const handleFilter = ({ target }) => {
+    const newFilter = filter.map((filter) =>
+      filter.id === target.name && filter.state !== true
+        ? { ...filter, state: true }
+        : { ...filter, state: false }
+    );
     setFilter(newFilter);
-  }
-  
+  };
+
   const handleToggleDN = () => {
-    setToggled(prev => !prev);
+    setToggled((prev) => !prev);
   };
 
   useEffect(() => {
@@ -84,8 +88,6 @@ const PokemonState = ({ children }) => {
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
-
-
   return (
     <PokemonContext.Provider
       value={{
@@ -103,7 +105,7 @@ const PokemonState = ({ children }) => {
         filter,
         handleFilter,
         toggled,
-        handleToggleDN
+        handleToggleDN,
       }}
     >
       {children}
