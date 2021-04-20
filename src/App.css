@@ -281,16 +281,16 @@ span.night {
   background-color: #212529;
 }
 
-
 /* FightCards */
 
 .moodCard {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .moodImg {
-  width: 80% !important;
+  width: 80%;
   padding-left: 30%;
+}
 
 /* Footer */
 footer {
@@ -308,5 +308,4 @@ footer.night {
 
 .logo-img {
   max-height: 200px;
-
 }

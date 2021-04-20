@@ -11,7 +11,6 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-
 import mood0 from "../images/moods/0.png";
 import mood1 from "../images/moods/1.png";
 import mood2 from "../images/moods/2.png";
@@ -101,22 +100,11 @@ const PokeFight = () => {
     }
   };
 
-  stateOpp.HP && if (stateOpp.HP < 1) {
+  if(stateOpp.HP && stateOpp.HP < 1) {
     alert("you won!!!!!");
     setScore((prevScore) => prevScore - 10);
     setHistory({ ...history, Fight: `won against ${opponent.name.english}` });
   }
-  /*   if (lifepoints * mood < oppLP * Math.floor(Math.random() * 7)) {
-      setLifepoints((prevLifepoints) => prevLifepoints - 20);
-    } else setOppLP((prevOppLP) => prevOppLP - 20);
-  console.log(lifepoints); 
-  }; */
-
-  /*   const handleSpecialAttack = () => {} */
-  /*     if (specialAttack * mood < oppLP * Math.floor(Math.random() * 7)) {
-      setLifepoints((prevLifepoints) => prevLifepoints - 20);
-    } else setOppLP((prevOppLP) => prevOppLP - 20);
-    console.log(lifepoints); */
 
   return pokemonData && mood ? (
     <Container>
