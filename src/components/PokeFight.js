@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+
 import mood0 from "../images/moods/0.png";
 import mood1 from "../images/moods/1.png";
 import mood2 from "../images/moods/2.png";
@@ -147,6 +148,7 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
+
                       now={statePok.Attack}
                       label={statePok.Attack}
                       max={100}

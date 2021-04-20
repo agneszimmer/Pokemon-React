@@ -11,6 +11,22 @@ const PokemonState = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState();
   const [history, setHistory] = useState();
+  const [toggled, setToggled] = useState(false);
+  const [filter, setFilter] = useState([
+    {id: 'checkHealth', state: false},
+    {id: 'checkAttack', state: false},
+    {id: 'checkDefense', state: false},
+    {id: 'checkSpeed', state: false}
+  ])
+
+  const handleFilter = ({target}) => {
+    const newFilter = filter.map(filter => filter.id === target.name && filter.state !== true ? ({...filter, state: true}) : ({...filter, state: false}));
+    setFilter(newFilter);
+  }
+  
+  const handleToggleDN = () => {
+    setToggled(prev => !prev);
+  };
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -30,8 +46,8 @@ const PokemonState = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     const fetchPokemonImg = async (poke) => {
-      setLoading(true);
       const { url } = poke;
       try {
         const res = await fetch(url);
@@ -43,13 +59,11 @@ const PokemonState = ({ children }) => {
       } catch (err) {
         console.log(err.message);
       }
-      setLoading(false);
     };
 
     const getPokemonImg = async () => {
-      setLoading(true);
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=24");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=40");
         const data = await res.json();
         data.results.forEach((poke) => {
           fetchPokemonImg(poke);
@@ -57,9 +71,9 @@ const PokemonState = ({ children }) => {
       } catch (err) {
         console.log(err.message);
       }
-      setLoading(false);
     };
     getPokemonImg();
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -70,7 +84,7 @@ const PokemonState = ({ children }) => {
     setPokemonData(newArr);
   }, [pokemon, pokemonImg]);
 
-  /*   console.log(pokemonData); */
+
 
   return (
     <PokemonContext.Provider
@@ -86,6 +100,10 @@ const PokemonState = ({ children }) => {
         setScore,
         history,
         setHistory,
+        filter,
+        handleFilter,
+        toggled,
+        handleToggleDN
       }}
     >
       {children}

@@ -1,32 +1,38 @@
 import { Fragment, useContext } from 'react';
+import { PokemonContext } from '../context/pokemonContext';
 import { Link, NavLink } from 'react-router-dom';
 // import { AuthContext } from '../context/pokemonContext';
 import Button from "react-bootstrap/Row";
+import Toggle from "./Toggle";
 
 const Navbar = () => {
+  const {
+    toggled
+  } = useContext(PokemonContext)
+
   // const { isAuthenticated, logOut } = useContext(AuthContext);
   const isAuthenticated = false;
 
   return (
-    <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
-      <div class="container-fluid">
+    <nav className={`navbar navbar-expand-md navbar-${!toggled ? "light" : "dark"} bg-${!toggled ? "light" : "dark"}`}>
+      <div class="container container-fluid">
         <Link className='navbar-brand' to='/'>
           PokeGame
         </Link>
+        <Toggle />
         <Button
           className='navbar-toggler'
           type='button'
-          data-toggle='collapse'
-          data-target='#navbarSupportedContent'
-          aria-controls='navbarSupportedContent'
+          data-bs-toggle='collapse'
+          data-bs-target='#navToggleContent'
+          aria-controls='navToggleContent'
           aria-expanded='false'
           aria-label='Toggle navigation'
         >
           <span className='navbar-toggler-icon'></span>
         </Button>
-
-        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-          <ul className='navbar-nav ml-auto w-50 justify-content-around'>
+        <div className='collapse navbar-collapse' id='navToggleContent'>
+          <ul className='navbar-nav ms-auto'>
             <li className='nav-item'>
               <NavLink to='/' exact activeClassName='active' className='nav-link'>
                 Home
