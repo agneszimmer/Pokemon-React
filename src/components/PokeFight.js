@@ -8,6 +8,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -85,26 +87,87 @@ const PokeFight = () => {
       });
   }, [opponent]);
 
-  const handleAttack = () => {
-    setStateOpp({ ...stateOpp, HP: stateOpp.HP - 2 * mood });
-    setMood(Math.floor(Math.random() * 9));
-  };
-
-  const handleSpecialAttack = () => {
-    if (statePok.Speed > 1) {
-      setMood((prevMood) => prevMood - 1);
-      setStateOpp({ ...stateOpp, HP: stateOpp.HP - 5 * mood });
-      setStatePok({ ...statePok, Speed: statePok.Speed - 20 });
+  function counterAttack() {
+    if (stateOpp.HP > 0) {
+      alert("COUNTER ATTACK");
+      setStatePok({
+        ...statePok,
+        HP: statePok.HP - Math.floor(Math.random() * 17) - stateOpp.Attack / 5,
+        Defense: statePok.Defense - 20,
+      });
     } else {
-      alert("not enough power");
+      loosing();
+    }
+  }
+
+  const winning = () => {
+    if (stateOpp.HP <= 0) {
+      return (
+        <Jumbotron>
+          <h1>You won against {opponent.name.english}</h1>
+          <p>Your new Score is {score}</p>
+          <p>
+            <Link to="/">
+              <Button variant="dark">
+                Choose a pokemon for the next fight
+              </Button>
+            </Link>
+          </p>
+        </Jumbotron>
+      );
     }
   };
 
-  if(stateOpp.HP && stateOpp.HP < 1) {
-    alert("you won!!!!!");
-    setScore((prevScore) => prevScore - 10);
-    setHistory({ ...history, Fight: `won against ${opponent.name.english}` });
-  }
+  const loosing = () => {
+    if (statePok.HP <= 0) {
+      return (
+        <Jumbotron>
+          <h1>You lost against {opponent.name.english}</h1>
+          <p>Your new Score is {score}</p>
+          <p>
+            <Link to="/">
+              <Button variant="dark">
+                Choose a pokemon for the next fight
+              </Button>
+            </Link>
+          </p>
+        </Jumbotron>
+      );
+    }
+  };
+
+  const handleAttack = () => {
+    setStateOpp({
+      ...stateOpp,
+      HP: stateOpp.HP - 2 * mood - statePok.Attack / 5,
+      Defense: stateOpp.Defense - 20,
+    });
+    setMood(Math.floor(Math.random() * 9));
+
+    if (stateOpp.HP > 10) {
+      setTimeout(() => counterAttack(), 500);
+    } else {
+      winning();
+    }
+  };
+
+  const handleSpecialAttack = () => {
+    if (statePok.Speed > 15) {
+      setStateOpp({
+        ...stateOpp,
+        HP: stateOpp.HP - 5 * mood - statePok.Attack / 5,
+      });
+      setStatePok({ ...statePok, Speed: statePok.Speed - 25 });
+      setMood((prevMood) => prevMood - 1);
+    } else {
+      alert("not enough power");
+    }
+    if (stateOpp.HP > 10) {
+      setTimeout(() => counterAttack(), 500);
+    } else {
+      winning();
+    }
+  };
 
   return pokemonData && mood ? (
     <Container>
@@ -136,7 +199,6 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-
                       now={statePok.Attack}
                       label={statePok.Attack}
                       max={100}
