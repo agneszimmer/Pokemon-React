@@ -106,3 +106,14 @@ body {
   color: #fff;
   background-color: #212529;
 }
+
+/* FightCards */
+
+.moodCard {
+  background-color: transparent !important;
+}
+
+.moodImg {
+  width: 80% !important;
+  padding-left: 30%;
+}

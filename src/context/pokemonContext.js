@@ -9,8 +9,8 @@ const PokemonState = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [myPokemon, setMyPokemon] = useState();
-  const [opponent, setOpponent] = useState();
+  const [score, setScore] = useState();
+  const [history, setHistory] = useState();
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -82,10 +82,10 @@ const PokemonState = ({ children }) => {
         setSearchTerm,
         searchResult,
         setSearchResult,
-        myPokemon,
-        setMyPokemon,
-        opponent,
-        setOpponent,
+        score,
+        setScore,
+        history,
+        setHistory,
       }}
     >
       {children}

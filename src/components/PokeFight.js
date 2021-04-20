@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import { PokemonContext } from "../context/pokemonContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Card from "react-bootstrap/Card";
 import React, { useState, useEffect, useContext } from "react";
+import Spinner from "./Spinner";
+import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Container from "react-bootstrap/Container";
@@ -10,47 +11,115 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import mood0 from "../images/moods/0.png";
+import mood1 from "../images/moods/1.png";
+import mood2 from "../images/moods/2.png";
+import mood3 from "../images/moods/3.webp";
+import mood4 from "../images/moods/4.png";
+import mood5 from "../images/moods/5.png";
+import mood6 from "../images/moods/6.png";
+import mood7 from "../images/moods/7.png";
+import mood8 from "../images/moods/love.png";
+
 const PokeFight = () => {
   const { id } = useParams();
-  const {
-    pokemonData,
-    myPokemon,
-    setMyPokemon,
-    opponent,
-    setOpponent,
-  } = useContext(PokemonContext);
+  const { pokemonData, score, setScore, history, setHistory } = useContext(
+    PokemonContext
+  );
 
-  const [lifepoints, setLifepoints] = useState();
-  const [defense, setDefense] = useState();
-  const [specialAttack, setSpecialAttack] = useState(3);
-  const [oppLP, setOppLP] = useState();
+  const [mood, setMood] = useState(Math.floor(Math.random() * 9));
+
+  const [myPokemon, setMyPokemon] = useState();
+  const [opponent, setOpponent] = useState();
+
+  const moodImgArray = [
+    mood0,
+    mood1,
+    mood2,
+    mood3,
+    mood4,
+    mood5,
+    mood6,
+    mood7,
+    mood8,
+  ];
+
+  const [statePok, setStatePok] = useState({
+    HP: null,
+    Defense: null,
+    Attack: null,
+    Speed: null,
+  });
+
+  const [stateOpp, setStateOpp] = useState({
+    HP: null,
+    Defense: null,
+    Attack: null,
+    Speed: null,
+  });
 
   useEffect(() => {
     setMyPokemon(pokemonData.find((p) => p.id == id));
-    console.log(myPokemon);
 
-    const randomPokemonId = Math.floor(Math.random() * pokemonData.length) + 1;
-    setOpponent(pokemonData.find((p) => p.id == randomPokemonId));
-    console.log(opponent);
+    const randomId = Math.floor(Math.random() * pokemonData.length) + 1;
+    setOpponent(pokemonData.find((p) => p.id == randomId));
+  }, [pokemonData]);
 
-    myPokemon && setLifepoints(myPokemon.base.HP);
+  useEffect(() => {
+    myPokemon &&
+      setStatePok({
+        HP: myPokemon.base.HP,
+        Attack: myPokemon.base.Attack,
+        Defense: myPokemon.base.Defense,
+        Speed: myPokemon.base.Speed,
+      });
+  }, [myPokemon]);
 
-    console.log(lifepoints);
-
-    opponent && setOppLP(opponent.base.HP);
-    console.log(oppLP);
-  }, [id, pokemonData]);
+  useEffect(() => {
+    opponent &&
+      setStateOpp({
+        HP: opponent.base.HP,
+        Attack: opponent.base.Attack,
+        Defense: opponent.base.Defense,
+        Speed: opponent.base.Speed,
+      });
+  }, [opponent]);
 
   const handleAttack = () => {
-    if (lifepoints < oppLP) {
-      setLifepoints((prevLifepoints) => prevLifepoints - 20);
-    } else setOppLP((prevOppLP) => prevOppLP - 20);
-    console.log(lifepoints);
+    setStateOpp({ ...stateOpp, HP: stateOpp.HP - 2 * mood });
+    setMood(Math.floor(Math.random() * 9));
   };
 
-  return (
+  const handleSpecialAttack = () => {
+    if (statePok.Speed > 1) {
+      setMood((prevMood) => prevMood - 1);
+      setStateOpp({ ...stateOpp, HP: stateOpp.HP - 5 * mood });
+      setStatePok({ ...statePok, Speed: statePok.Speed - 20 });
+    } else {
+      alert("not enough power");
+    }
+  };
+
+  stateOpp.HP && if (stateOpp.HP < 1) {
+    alert("you won!!!!!");
+    setScore((prevScore) => prevScore - 10);
+    setHistory({ ...history, Fight: `won against ${opponent.name.english}` });
+  }
+  /*   if (lifepoints * mood < oppLP * Math.floor(Math.random() * 7)) {
+      setLifepoints((prevLifepoints) => prevLifepoints - 20);
+    } else setOppLP((prevOppLP) => prevOppLP - 20);
+  console.log(lifepoints); 
+  }; */
+
+  /*   const handleSpecialAttack = () => {} */
+  /*     if (specialAttack * mood < oppLP * Math.floor(Math.random() * 7)) {
+      setLifepoints((prevLifepoints) => prevLifepoints - 20);
+    } else setOppLP((prevOppLP) => prevOppLP - 20);
+    console.log(lifepoints); */
+
+  return pokemonData && mood ? (
     <Container>
-      {opponent && myPokemon && (
+      {opponent && myPokemon && mood && (
         <Row className="align-items-center text-center my-5">
           <Col>
             <Card key={myPokemon.id} className="pokeCard">
@@ -64,8 +133,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={lifepoints}
-                      label={lifepoints}
+                      now={statePok.HP}
+                      label={statePok.HP}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -78,8 +147,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={myPokemon.base.Attack}
-                      label={myPokemon.base.Attack}
+                      now={statePok.Attack}
+                      label={statePok.Attack}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -91,8 +160,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={myPokemon.base.Defense}
-                      label={myPokemon.base.Defense}
+                      now={statePok.Defense}
+                      label={statePok.Defense}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -104,8 +173,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={myPokemon.base.Speed}
-                      label={myPokemon.base.Speed}
+                      now={statePok.Speed}
+                      label={statePok.Speed}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -114,12 +183,18 @@ const PokeFight = () => {
             </Card>
           </Col>
           <Col>
-            <Button variant="btn btn-dark" onClick={handleAttack}>
-              Attack
-            </Button>
-            <Button variant="btn btn-dark" /* onClick={handleAttack} */>
-              Special Attack (3)
-            </Button>
+            <Card key={mood} className="moodCard">
+              <Card.Title style={{ color: "yellow" }}>I feel like</Card.Title>
+              <Card.Img className="moodImg pt-2 top" src={moodImgArray[mood]} />
+              <Card.Body>
+                <Button variant="btn btn-warning" onClick={handleAttack}>
+                  Attack
+                </Button>
+                <Button variant="btn btn-dark" onClick={handleSpecialAttack}>
+                  Special Attack
+                </Button>
+              </Card.Body>
+            </Card>
           </Col>
           <Col>
             <Card key={opponent.id} className="pokeCard">
@@ -137,8 +212,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={oppLP}
-                      label={oppLP}
+                      now={stateOpp.HP}
+                      label={stateOpp.HP}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -151,8 +226,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={opponent.base.Attack}
-                      label={opponent.base.Attack}
+                      now={stateOpp.Attack}
+                      label={stateOpp.Attack}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -164,8 +239,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={opponent.base.Defense}
-                      label={opponent.base.Defense}
+                      now={stateOpp.Defense}
+                      label={stateOpp.Defense}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -177,8 +252,8 @@ const PokeFight = () => {
                     <ProgressBar
                       className="progressBar ms-2"
                       animated
-                      now={opponent.base.Speed}
-                      label={opponent.base.Speed}
+                      now={stateOpp.Speed}
+                      label={stateOpp.Speed}
                       max={100}
                     />
                   </ListGroup.Item>
@@ -189,6 +264,8 @@ const PokeFight = () => {
         </Row>
       )}
     </Container>
+  ) : (
+    <Spinner />
   );
 };
 
