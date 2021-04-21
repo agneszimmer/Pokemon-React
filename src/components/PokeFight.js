@@ -101,21 +101,17 @@ const PokeFight = () => {
   }
 
   const winning = () => {
-    if (stateOpp.HP <= 0) {
-      return (
-        <Jumbotron>
-          <h1>You won against {opponent.name.english}</h1>
-          <p>Your new Score is {score}</p>
-          <p>
-            <Link to="/">
-              <Button variant="dark">
-                Choose a pokemon for the next fight
-              </Button>
-            </Link>
-          </p>
-        </Jumbotron>
-      );
-    }
+    return (
+      <Jumbotron>
+        <h1>You won against {opponent.name.english}</h1>
+        <p>Your new Score is {score}</p>
+        <p>
+          <Link to="/">
+            <Button variant="dark">Choose a pokemon for the next fight</Button>
+          </Link>
+        </p>
+      </Jumbotron>
+    );
   };
 
   const loosing = () => {
