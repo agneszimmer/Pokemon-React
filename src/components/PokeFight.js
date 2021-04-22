@@ -29,10 +29,12 @@ const PokeFight = () => {
     PokemonContext
   );
 
-  const [mood, setMood] = useState(Math.floor(Math.random() * 9));
-
+  const [mood, setMood] = useState(Math.floor(Math.random() * 9 + 1));
+  
   const [myPokemon, setMyPokemon] = useState();
   const [opponent, setOpponent] = useState();
+  const [win, setWin] = useState(false);
+  const [loose, setLoose] = useState(false);
 
   const moodImgArray = [
     mood0,
@@ -63,7 +65,7 @@ const PokeFight = () => {
   useEffect(() => {
     setMyPokemon(pokemonData.find((p) => p.id == id));
 
-    const randomId = Math.floor(Math.random() * pokemonData.length) + 1;
+    const randomId = Math.floor(Math.random() * pokemonData.length);
     setOpponent(pokemonData.find((p) => p.id == randomId));
   }, [pokemonData]);
 
@@ -87,87 +89,103 @@ const PokeFight = () => {
       });
   }, [opponent]);
 
-  function counterAttack() {
-    if (stateOpp.HP > 0) {
-      alert("COUNTER ATTACK");
-      setStatePok({
-        ...statePok,
-        HP: statePok.HP - Math.floor(Math.random() * 17) - stateOpp.Attack / 5,
-        Defense: statePok.Defense - 20,
-      });
-    } else {
-      loosing();
-    }
-  }
-
-  const winning = () => {
-    return (
-      <Jumbotron>
-        <h1>You won against {opponent.name.english}</h1>
-        <p>Your new Score is {score}</p>
-        <p>
-          <Link to="/">
-            <Button variant="dark">Choose a pokemon for the next fight</Button>
-          </Link>
-        </p>
-      </Jumbotron>
-    );
-  };
-
-  const loosing = () => {
-    if (statePok.HP <= 0) {
-      return (
-        <Jumbotron>
-          <h1>You lost against {opponent.name.english}</h1>
-          <p>Your new Score is {score}</p>
-          <p>
-            <Link to="/">
-              <Button variant="dark">
-                Choose a pokemon for the next fight
-              </Button>
-            </Link>
-          </p>
-        </Jumbotron>
-      );
-    }
-  };
-
   const handleAttack = () => {
-    setStateOpp({
+    setStateOpp(() => ({
       ...stateOpp,
-      HP: stateOpp.HP - 2 * mood - statePok.Attack / 5,
-      Defense: stateOpp.Defense - 20,
-    });
+      HP: Math.floor(stateOpp.HP - mood - 0.5 * statePok.Attack),
+    }));
     setMood(Math.floor(Math.random() * 9));
 
-    if (stateOpp.HP > 10) {
-      setTimeout(() => counterAttack(), 500);
-    } else {
-      winning();
+    if (stateOpp.HP > 0 && statePok > 0) {
+      counterAttack();
+      if (statePok.HP <= 0) setStateOpp(() => ({
+        ...stateOpp,
+        HP: 0,
+        Attack: 0,
+        Defense: 0,
+        Speed: 0
+      }));
     }
+    
+    if (stateOpp.HP <= 0) {
+      setScore(prev => prev + 10); 
+      setWin(true);
+    }
+
+    if (statePok.HP <= 0) {
+      setScore(prev => prev - 10); 
+      setLoose(true);
+    } 
   };
 
+  const counterAttack = () => {
+    alert("COUNTER ATTACK");
+    setStatePok({
+      ...statePok,
+      HP: Math.floor(statePok.HP - 0.5 * stateOpp.Attack),
+    });
+  }
+
   const handleSpecialAttack = () => {
-    if (statePok.Speed > 15) {
+    if (statePok.Speed > 0) {
       setStateOpp({
         ...stateOpp,
-        HP: stateOpp.HP - 5 * mood - statePok.Attack / 5,
+        HP: Math.floor(stateOpp.HP - 2 * mood - 0.2 * statePok.Attack),
       });
-      setStatePok({ ...statePok, Speed: statePok.Speed - 25 });
-      setMood((prevMood) => prevMood - 1);
+      setStatePok({ ...statePok, Speed: statePok.Speed - 15 });
+      setMood(1);
     } else {
       alert("not enough power");
     }
-    if (stateOpp.HP > 10) {
-      setTimeout(() => counterAttack(), 500);
-    } else {
-      winning();
+    if (stateOpp.HP > 0 && statePok > 0) counterAttack(); 
+    
+    if (stateOpp.HP <= 0) {
+      setScore(prev => prev + 10); 
+      setWin(true);
     }
+
+    if (statePok.HP <= 0) {
+      setScore(prev => prev - 10); 
+      setLoose(true);
+    } 
   };
 
-  return pokemonData && mood ? (
+  if(win) {
+    return (
+      <Container>
+        <Card className="pokeCard text-center py-4 my-5">
+          <Card.Title>You won against <b>{opponent.name.english}</b></Card.Title>
+          <Card.Text>Your new Score is <b>{score}</b></Card.Text>
+          <div style={{margin: "5px auto"}}>
+            <Link className="btn btn-dark" to="/">Choose a pokemon for the next fight</Link>
+          </div>
+          <div> 
+            <Button variant="btn btn-outline-danger" onClick={(() => setScore(0))}>Reset your score</Button>
+          </div>
+        </Card>
+      </Container>
+    )
+  }
+
+  if(loose) {
+    return (
+      <Container>
+        <Card className="pokeCard text-center py-4 my-5">
+          <Card.Title>You lost against <b>{opponent.name.english}</b></Card.Title>
+          <Card.Text>Your new Score is <b>{score}</b></Card.Text>
+          <div style={{margin: "5px auto"}}>
+            <Link className="btn btn-dark" to="/">Choose a pokemon for the next fight</Link>
+          </div>
+          <div> 
+            <Button variant="btn btn-outline-danger" onClick={(() => setScore(0))}>Reset your score</Button>
+          </div>
+        </Card>
+      </Container>
+    );
+  } 
+
+  return opponent && pokemonData ? (
     <Container>
-      {opponent && myPokemon && mood && (
         <Row className="align-items-center text-center my-5">
           <Col>
             <Card key={myPokemon.id} className="pokeCard">
@@ -231,7 +249,7 @@ const PokeFight = () => {
             </Card>
           </Col>
           <Col>
-            <Card key={mood} className="moodCard">
+            <Card className="moodCard">
               <Card.Title style={{ color: "yellow" }}>I feel like</Card.Title>
               <Card.Img className="moodImg pt-2 top" src={moodImgArray[mood]} />
               <Card.Body>
@@ -245,7 +263,7 @@ const PokeFight = () => {
             </Card>
           </Col>
           <Col>
-            <Card key={opponent.id} className="pokeCard">
+            <Card className="pokeCard">
               <Card.Img
                 className="pt-2 top"
                 src={opponent.img}
@@ -310,7 +328,6 @@ const PokeFight = () => {
             </Card>
           </Col>
         </Row>
-      )}
     </Container>
   ) : (
     <Spinner />
