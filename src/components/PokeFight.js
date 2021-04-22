@@ -244,7 +244,7 @@ const PokeFight = () => {
           <Col className="col-sm-12 col-md-4">
             <Card className="moodCard">
               <Card.Title style={{ color: "yellow" }}>I feel like</Card.Title>
-              <Card.Img className="moodImg top" src={moodImgArray[mood]} />
+              <Card.Img className="moodImg top" src={moodImgArray[mood + 1]} />
               <Card.Body>
                 <Button variant="btn btn-warning" onClick={handleAttack}>
                   Attack
