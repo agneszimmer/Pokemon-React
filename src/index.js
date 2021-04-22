@@ -8,11 +8,11 @@ import PokemonContext from "./context/pokemonContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <PokemonContext>
-        <App />
-      </PokemonContext>
-    </Router>
+      <Router>
+        <PokemonContext>
+          <App />
+        </PokemonContext>
+      </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
