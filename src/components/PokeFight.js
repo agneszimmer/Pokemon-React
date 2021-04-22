@@ -91,14 +91,17 @@ const PokeFight = () => {
   const condition = () => {
     if (stateOpp.HP > 0 && statePok.HP > 0) {
       counterAttack();
-      if (statePok.HP <= 0) setStateOpp(() => ({
+    }
+    
+    if (statePok.HP <= 0) {
+      setStateOpp(() => ({
         HP: 0,
         Attack: 0,
         Defense: 0,
         Speed: 0
       }));
     }
-    
+
     if (stateOpp.HP <= 0) {
       setScore(prev => prev + 10); 
       setWin(true);
