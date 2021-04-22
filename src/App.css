@@ -229,6 +229,18 @@ span.night {
   width: 90%;
 }
 
+/* FightCards */
+.moodCard {
+  background-color: transparent;
+  flex: 0 1 19%;
+  min-width: 230px;
+}
+
+.moodImg {
+  width: 50%;
+  margin: 0 auto;
+}
+
 /* Pagination */
 .paginationBtns {
   width: 80%;
@@ -279,17 +291,6 @@ span.night {
 .paginationActive a {
   color: #fff;
   background-color: #212529;
-}
-
-/* FightCards */
-
-.moodCard {
-  background-color: transparent;
-}
-
-.moodImg {
-  width: 80%;
-  padding-left: 30%;
 }
 
 /* Footer */

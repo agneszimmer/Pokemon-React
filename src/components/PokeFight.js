@@ -25,7 +25,7 @@ import mood8 from "../images/moods/love.png";
 
 const PokeFight = () => {
   const { id } = useParams();
-  const { pokemonData, score, setScore, history, setHistory } = useContext(
+  const { pokemonData, score, setScore, history, setHistory, toggled } = useContext(
     PokemonContext
   );
 
@@ -147,7 +147,7 @@ const PokeFight = () => {
   if(win) {
     return (
       <Container>
-        <Card className="pokeCard text-center py-4 my-5">
+        <Card className={`pokeCard text-center py-4 my-5 ${!toggled ? "" : "night"}`}>
           <Card.Title>You won against <b>{opponent.name.english}</b></Card.Title>
           <Card.Text>Your new Score is <b>{score}</b></Card.Text>
           <div style={{margin: "5px auto"}}>
@@ -164,7 +164,7 @@ const PokeFight = () => {
   if(loose) {
     return (
       <Container>
-        <Card className="pokeCard text-center py-4 my-5">
+        <Card className={`pokeCard text-center py-4 my-5 ${!toggled ? "" : "night"}`}>
           <Card.Title>You lost against <b>{opponent.name.english}</b></Card.Title>
           <Card.Text>Your new Score is <b>{score}</b></Card.Text>
           <div style={{margin: "5px auto"}}>
@@ -181,8 +181,8 @@ const PokeFight = () => {
   return opponent && pokemonData ? (
     <Container>
         <Row className="align-items-center text-center my-5">
-          <Col>
-            <Card key={myPokemon.id} className="pokeCard">
+          <Col className="col-sm-12 col-md-4 my-5">
+            <Card className={`pokeCard ${!toggled ? "" : "night"}`}>
               <Card.Img className="pokeImg pt-2 top" src={myPokemon.img} />
               <Card.Body>
                 <Card.Title>{myPokemon.name.english}</Card.Title>
@@ -242,10 +242,10 @@ const PokeFight = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col>
+          <Col className="col-sm-12 col-md-4">
             <Card className="moodCard">
               <Card.Title style={{ color: "yellow" }}>I feel like</Card.Title>
-              <Card.Img className="moodImg pt-2 top" src={moodImgArray[mood]} />
+              <Card.Img className="moodImg top" src={moodImgArray[mood]} />
               <Card.Body>
                 <Button variant="btn btn-warning" onClick={handleAttack}>
                   Attack
@@ -256,8 +256,8 @@ const PokeFight = () => {
               </Card.Body>
             </Card>
           </Col>
-          <Col>
-            <Card className="pokeCard">
+          <Col className="col-sm-12 col-md-4">
+            <Card  className={`pokeCard ${!toggled ? "" : "night"}`}>
               <Card.Img
                 className="pt-2 top"
                 src={opponent.img}
