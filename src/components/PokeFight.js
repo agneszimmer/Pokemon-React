@@ -89,14 +89,8 @@ const PokeFight = () => {
       });
   }, [opponent]);
 
-  const handleAttack = () => {
-    setStateOpp(() => ({
-      ...stateOpp,
-      HP: Math.floor(stateOpp.HP - mood - 0.1 * statePok.Attack),
-    }));
-    setMood(Math.floor(Math.random() * 9));
-
-    if (stateOpp.HP > 0 && statePok > 0) {
+  const condition = () => {
+    if (stateOpp.HP > 0 && statePok.HP > 0) {
       counterAttack();
       if (statePok.HP <= 0) setStateOpp(() => ({
         HP: 0,
@@ -115,8 +109,19 @@ const PokeFight = () => {
       setScore(prev => prev - 10); 
       setLoose(true);
     } 
-  };
+  }
 
+
+  const handleAttack = () => {
+    setStateOpp(() => ({
+      ...stateOpp,
+      HP: Math.floor(stateOpp.HP - mood - 0.1 * statePok.Attack),
+    }));
+    setMood(Math.floor(Math.random() * 9));
+
+    condition();
+  };
+  
   const counterAttack = () => {
     alert("COUNTER ATTACK");
     setStatePok({
@@ -124,7 +129,7 @@ const PokeFight = () => {
       HP: Math.floor(statePok.HP - 0.1 * stateOpp.Attack),
     });
   }
-
+  
   const handleSpecialAttack = () => {
     if (statePok.Speed > 0) {
       setStateOpp({
@@ -136,26 +141,7 @@ const PokeFight = () => {
     } else {
       alert("not enough power");
     }
-
-    if (stateOpp.HP > 0 && statePok > 0) {
-      counterAttack();
-      if (statePok.HP <= 0) setStateOpp(() => ({
-        HP: 0,
-        Attack: 0,
-        Defense: 0,
-        Speed: 0
-      }));
-    }
-
-    if (stateOpp.HP <= 0) {
-      setScore(prev => prev + 10); 
-      setWin(true);
-    }
-
-    if (statePok.HP <= 0) {
-      setScore(prev => prev - 10); 
-      setLoose(true);
-    } 
+    condition();
   };
 
   if(win) {
